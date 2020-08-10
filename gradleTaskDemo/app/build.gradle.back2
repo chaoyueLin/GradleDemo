@@ -1,0 +1,73 @@
+task helloWorld {
+    doLast {
+        println "Hello World!"
+    }
+}
+
+
+task myTask1 {
+    println "configure task1"
+}
+
+task myTask2 {
+    println "configure task2"
+}
+
+
+
+myTask1.doFirst {
+    println "task1 doFirst"
+}
+
+myTask1.doLast {
+    println "task1 doLast"
+}
+
+myTask2.doLast {
+    println "task2 doLast"
+}
+
+
+task myTask11{
+    doLast{
+        println "task11 doLast"
+    }
+}
+
+task myTask12{
+    doLast{
+        println "task12 doLast"
+    }
+}
+
+
+task myTask13{
+    doLast{
+        println "task13 doLast"
+    }
+}
+
+task myTask13(description: "这是task3的描述", group: "myTaskGroup", dependsOn: [myTask11, myTask12], overwrite: true) {
+    doLast {
+        println "doLast in task13, this is new task"
+    }
+}
+
+
+//当有task创建时
+getTasks().whenTaskAdded { Task task ->
+    println "The task ${task.getName()} is added to the TaskContainer"
+}
+
+//采用create(name: String)创建
+getTasks().create("task1")
+
+//采用create(options: Map<String, ?>)创建
+getTasks().create([name: "task2", group: "MyGroup", description: "这是task2描述", dependsOn: ["task1"]])
+
+//采用create(options: Map<String, ?>, configure: Closure)创建
+getTasks().create("task3", {
+    group "MyGroup"
+    setDependsOn(["task1", "task2"])
+    setDescription "这是task3描述"
+})

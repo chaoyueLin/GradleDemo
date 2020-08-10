@@ -1,0 +1,18 @@
+File mkDir = mkdir("${buildDir}/test");
+File mkDir2 = mkdir("${buildDir}/test2")
+println "检测目录是否创建成功：${mkDir.exists()}, ${mkDir2.exists()}"
+
+//定位单个文件，参数可以是相对路径、绝对路径
+File testDir = file("${buildDir}/test")
+println "文件定位是否成功：${testDir.exists()}"
+
+//文件集合，Gradle里用 FileCollection 来表示
+FileCollection fileCollection = files("${buildDir}/test", "${buildDir}/test2")
+println "-------对文件集合进行迭代--------"
+fileCollection.each {File f ->
+    println f.name
+}
+println "-------文件迭代结束-------"
+//获取文件列表
+Set<File> set = fileCollection.getFiles()
+println "文件集合里共有${set.size()}个文件"

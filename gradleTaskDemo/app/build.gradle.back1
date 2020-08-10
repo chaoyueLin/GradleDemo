@@ -1,0 +1,35 @@
+//当有task创建时
+getTasks().whenTaskAdded { Task task ->
+    println "The task ${task.getName()} is added to the TaskContainer"
+}
+
+//采用create(name: String)创建
+getTasks().create("task1")
+
+//采用create(options: Map<String, ?>)创建
+getTasks().create([name: "task2", group: "MyGroup", description: "这是task2描述", dependsOn: ["task1"]])
+
+//采用create(options: Map<String, ?>, configure: Closure)创建
+getTasks().create("task3", {
+    group "MyGroup"
+    setDependsOn(["task1", "task2"])
+    setDescription "这是task3描述"
+})
+
+task test1 {
+    //设置inputs
+    inputs.property("name", "hjy")
+    inputs.property("age", 20)
+    //设置outputs
+    outputs.file("$buildDir/test.txt")
+
+    doLast {
+        println "exec task task1"
+    }
+}
+
+task test2 {
+    doLast {
+        println "exec task task2"
+    }
+}

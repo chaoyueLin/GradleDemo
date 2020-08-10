@@ -1,0 +1,20 @@
+//在 app/build.gradle 里增加
+println "-----app config-----"
+println "appParam = ${appParam}"
+println "allParam = ${allParam}"
+println "subParam = ${subParam}"
+
+apply plugin: TestPlugin
+
+myExtension {
+    message "Hello Plugin"
+    isDebug true
+
+    defaultConfig {
+        applicationId "com.android.hq.test"
+        minSdkVersion 23
+        targetSdkVersion 23
+
+        println "print in defaultConfig"
+    }
+}

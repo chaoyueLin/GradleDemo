@@ -1,0 +1,76 @@
+apply plugin: 'com.android.application'
+//
+//apply plugin: TestPlugin
+apply plugin: 'com.example.myplugin'
+
+android {
+    compileSdkVersion 29
+    defaultConfig {
+        applicationId "com.example.gradletaskdemo"
+        minSdkVersion 16
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
+
+student {
+    name 'Mike'
+    age 18
+    isMale true
+}
+//
+//animal {
+//
+//    legs = 4    //配置属性
+//}
+//
+//pig {
+//
+//    setLegs 2   //这个是方法调用，也就是 setLegs(2)
+//}
+//
+//outer {
+//
+//    outerName "outer"
+//    msg "this is a outer message."
+//
+//    inner {
+//        innerName "inner"
+//        msg "This is a inner message."
+//    }
+//
+//}
+
+task JsonChao
+JsonChao {
+    println("hello~")
+    doFirst {
+        println("start")
+    }
+    doLast {
+        println("end")
+    }
+}
+task Andorid(dependsOn:"JsonChao") {
+    doLast {
+        println("end?")
+    }
+}
+

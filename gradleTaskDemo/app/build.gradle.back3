@@ -1,0 +1,37 @@
+File bd = getBuildDir()
+println "buildDir = ${bd.getAbsolutePath()}"
+
+//获取Project的名字
+String name = getName()
+println "project name = $name"
+
+//设置Project的描述信息
+setDescription "这是一个测试案例"
+String desc = getDescription()
+println "project description = $desc"
+
+//获取Project的路径
+String path = getPath();
+println "project path = $path"
+
+class VersionInfo {
+    String version
+    boolean release
+
+    VersionInfo(String v, boolean release) {
+        version = v
+        this.release = release
+    }
+
+    String toString() {
+        return "V-${version}-${release ? 'release' : 'debug'}"
+    }
+}
+//设置Project的版本号，参数可以是任何对象，gradle内部会使用 toString() 方法返回的值
+setVersion(new VersionInfo("1.0.0", true))
+println("project version = ${getVersion()}")
+
+//设置Project的分组
+setGroup "TestGroup"
+println("project group = ${getGroup()}")
+

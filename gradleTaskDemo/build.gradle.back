@@ -1,0 +1,25 @@
+//在根目录 build.gradle 里增加
+println "-----root file config-----"
+
+//配置 app 项目
+project(":app") {
+    ext {
+        appParam = "test app"
+    }
+}
+
+//配置所有的项目
+allprojects {
+    ext {
+        allParam = "test all project"
+    }
+}
+
+//配置子项目
+subprojects {
+    ext {
+        subParam = "test sub project"
+    }
+}
+
+println "allParam = ${allParam}"
