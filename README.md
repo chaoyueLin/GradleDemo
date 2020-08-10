@@ -62,7 +62,7 @@ com.android.application学习，[https://developer.android.com/studio/build?hl=z
 # Gradle API
 ## Gradle 构建生命周期
 Gradle 的构建过程分为 三部分：初始化阶段、配置阶段和执行阶段。其构建流程如下图所示：
-![](./gradle_lifecycle.png)
+![](./img/gradle_lifecycle.png)
 
 ### 初始化阶段 setting.gradle
 ### 配置阶段的
@@ -73,7 +73,7 @@ Gradle 的构建过程分为 三部分：初始化阶段、配置阶段和执行
 ### 执行阶段
 在配置阶段结束后，Gradle 会根据各个任务 Task 的依赖关系来创建一个有向无环图然后，Gradle 构建系统会通过调用 gradle <任务名> 来执行相应的各个任务。
 
-![](./gradle_lifecycle_hook.png)
+----------gradle_lifecycle_hook.png)
 
 可以看到，整个 Gradle 生命周期的流程包含如下 四个部分：
 
@@ -85,7 +85,7 @@ Gradle 的构建过程分为 三部分：初始化阶段、配置阶段和执行
 # Project
 每一个 build.gradle 都有一个与之对应的 Project 实例
 ## Project核心API分解
-![](./project_api.png)
+![](./img/project_api.png)
 
 * 1）、Project API：让当前的 Project 拥有了操作它的父 Project 以及管理它的子 Project 的能力。
 * 2）、Task 相关 API：为当前 Project 提供了新增 Task 以及管理已有 Task 的能力。由于 task 非常重要，我们将放到第四章来进行讲解。
@@ -96,7 +96,7 @@ Gradle 的构建过程分为 三部分：初始化阶段、配置阶段和执行
 # Task
 只有 Task 才可以在 Gradle 的执行阶段去执行（其实质是执行的 Task 中的一系列 Action），所以 Task 的重要性不言而喻。
 ## Task属性
-![](./task.png)
+![](./img/task.png)
 
 Task 通常使用 doFirst 与 doLast 两个方式用于在执行期间进行操作。
 
@@ -221,7 +221,7 @@ assembleDebug 打包流程？
 一些很重要Task实现原理?
 
 ## Gradle 插件的整体实现架构
-![](./gradle.jpg)
+![](./img/gradle.jpg)
 关于自定义 Plugin 通常有两种使用套路，如下所示：
 
 * 1）、在 Android Gradle plugin 提供的 task 的基础上，插入一些自定义的 task。
@@ -231,7 +231,7 @@ assembleDebug 打包流程？
 * 1）、首先，初始化 Gradle 构建框架自身。
 * 2）、然后，把命令行参数包装好送给 DefaultGradleLauncher。
 * 3）、最后，触发 DefaultGradleLauncher 中 Gradle 构建的生命周期，并开始执行标准的构建流程。
-![](./gradle_excute.jpg)
+![](./img/gradle_excute.jpg)
 
 ## AppPlugin 构建流程
 BasePlugin#apply-> basePluginApply 中配置project,配置extentsion,创建tasks
@@ -304,7 +304,7 @@ configureExtension中就是我们比较熟悉的builid.gradle的使用
 ## assembleDebug 打包流程
 比较详细的打包流程可简述为如下 八个步骤：
 
-![](./assemble.jpg)
+![](./img/assemble.jpg)
 
 * 1、首先，.aidl（Android Interface Description Language）文件需要通过 aidl 工具转换成编译器能够处理的 Java 接口文件。
 * 2、同时，资源文件（包括 AndroidManifest.xml、布局文件、各种 xml 资源等等）将被 AAPT（Asset Packaging Tool）（Android Gradle Plugin 3.0.0 及之后使用 AAPT2 替代了 AAPT）处理为最终的 resources.arsc，并生成 R.java 文件以保证源码编写时可以方便地访问到这些资源。
@@ -321,10 +321,10 @@ configureExtension中就是我们比较熟悉的builid.gradle的使用
 * 2）、非增量 Task：继承于 NonIncrementalTask 这个非增量 Task 基类，重写 doTaskAction 抽象方法实现全量更新功能。
 * 3）、Transform Task：我们编写的每一个自定义 Transform 会在调用 appExtension.registerTransform(new CustomTransform()) 注册方法时将其保存到当前的 Extension 类中的 transforms 列表中，当 LibraryTaskManager/TaskManager 调用 createPostCompilationTasks（负责为给定 Variant 创建编译后的 task）方法时，会取出相应 Extension 中的 tranforms 列表进行遍历，并通过 TransformManager.addTransform 方法将每一个 Transform 转换为与之对应的 TransformTask 实例，而该方法内部具体是通过 new TransformTask.CreationAction(...) 的形式进行创建。
 
-![](./assemble_task1.png)
-![](./assemble_task2.png)
-![](./assemble_task3.png)
-![](./assemble_task4.png)
+![](./img/assemble_task1.png)
+![](./img/assemble_task2.png)
+![](./img/assemble_task3.png)
+![](./img/assemble_task4.png)
 ## 重要Task实现源码分析
 
 * 1）、processDebugManifest,重点是在合并 flavors 并且构建与之对应的 manifest 文件,最后保存 manifest 到 build/intermediates/merged_manifests/flavorName/AndroidManifest.xml
