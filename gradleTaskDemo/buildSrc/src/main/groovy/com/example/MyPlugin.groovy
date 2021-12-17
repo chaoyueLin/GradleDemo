@@ -1,11 +1,13 @@
 package com.example
 
 import org.gradle.api.Action
+import org.gradle.api.DefaultTask
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.NamedDomainObjectFactory
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ExtensionAware
+import org.gradle.api.tasks.TaskAction
 import org.gradle.internal.reflect.Instantiator
 
 
@@ -129,5 +131,12 @@ public class MyPlugin implements  Plugin<Project>{
             }
         }
 
+    }
+}
+
+public class TestJavaTask extends DefaultTask {
+    @TaskAction
+    public void testAction(){
+        System.out.println("### This is TestJavaTask");
     }
 }

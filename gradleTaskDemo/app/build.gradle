@@ -74,3 +74,12 @@ task Andorid(dependsOn:"JsonChao") {
     }
 }
 
+
+task testCustom(type: com.example.TestJavaTask) {
+    doFirst {
+        println "Hello"
+    }
+    doLast {
+        println "GoodBye"
+    }
+}
