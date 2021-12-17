@@ -1,85 +1,39 @@
-apply plugin: 'com.android.application'
-//
-//apply plugin: TestPlugin
-apply plugin: 'com.example.myplugin'
+task A  {
+    println 'Hello from A'
+}
+task B  {
+    println 'Hello from B'
+}
+B.dependsOn A
 
-android {
-    compileSdkVersion 29
-    defaultConfig {
-        applicationId "com.example.gradletaskdemo"
-        minSdkVersion 16
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
+task C  {
+    println 'Hello from C'
+}
+task D  {
+    println 'Hello from D'
+}
+C.mustRunAfter D
+
+
+task E  {
+    println 'Hello from E'
+}
+task F  {
+    println 'Hello from F'
+}
+E.finalizedBy F
+
+
+task hello2 (type: Copy){
+    from 'src/main/AndroidManifest.xml'  // 调用 from 方法
+    into 'build/test'  // 调用 into 方法
+    // 调用 rename 方法
+    rename {String fileName ->
+        fileName = "AndroidManifestCopy.xml"
     }
 }
 
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+task G  {
+    println 'Hello from G'
 }
-
-student {
-    name 'Mike'
-    age 18
-    isMale true
-}
-//
-//animal {
-//
-//    legs = 4    //配置属性
-//}
-//
-//pig {
-//
-//    setLegs 2   //这个是方法调用，也就是 setLegs(2)
-//}
-//
-//outer {
-//
-//    outerName "outer"
-//    msg "this is a outer message."
-//
-//    inner {
-//        innerName "inner"
-//        msg "This is a inner message."
-//    }
-//
-//}
-
-task JsonChao
-JsonChao {
-    println("hello~")
-    doFirst {
-        println("start")
-    }
-    doLast {
-        println("end")
-    }
-}
-task Andorid(dependsOn:"JsonChao") {
-    doLast {
-        println("end?")
-    }
-}
-
-
-task testCustom(type: com.example.TestJavaTask) {
-    doFirst {
-        println "Hello"
-    }
-    doLast {
-        println "GoodBye"
-    }
-}
+A.onlyIf{!project.hasProperty('skipG')}
