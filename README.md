@@ -73,7 +73,7 @@ Gradle 的构建过程分为 三部分：初始化阶段、配置阶段和执行
 ### 执行阶段
 在配置阶段结束后，Gradle 会根据各个任务 Task 的依赖关系来创建一个有向无环图然后，Gradle 构建系统会通过调用 gradle <任务名> 来执行相应的各个任务。
 
-----------gradle_lifecycle_hook.png)
+![](./img/gradle_lifecycle_hook.png)
 
 可以看到，整个 Gradle 生命周期的流程包含如下 四个部分：
 
@@ -93,6 +93,43 @@ Gradle 的构建过程分为 三部分：初始化阶段、配置阶段和执行
 * 4）、File 相关 Api：Project File 相关的 API 主要用来操作我们当前 Project 下的一些文件处理。
 * 5）、Gradle 生命周期 API：即我们在第二章讲解过的生命周期 API。
 * 6）、其它 API：添加依赖、添加配置、引入外部文件等等零散 API 的聚合。
+
+## Project API
+Project 提供了一系列操作 Project 对象的 API：
+
+* getProject()： 返回当前 Project；
+* getParent()： 返回父 Project，如果在工程 RootProject 中调用，则会返回 null；
+* getRootProject()： 返回工程 RootProject；
+* getAllprojects()： 返回一个 Project Set 集合，包含当前 Project 与所有子 Project；
+* getSubprojects()： 返回一个 Project Set 集合，包含所有子 Project；
+* project(String)： 返回指定 Project，不存在时抛出 UnKnownProjectException；
+* findProject(String)： 返回指定 Project，不存在时返回 null；
+* allprojects(Closure)： 为当前 Project 以及所有子 Project 增加配置；
+* subprojects(Closure)： 为所有子 Project 增加配置。
+
+## Project 属性 API
+Project 提供了一系列操作属性的 API，通过属性 API 可以实现在 Project 之间共享配置参数：
+
+* hasProperty(String)： 判断是否存在指定属性名；
+* property(Stirng)： 获取属性值，如果属性不存在则抛出 MissingPropertyException；
+* findProperty(String)： 获取属性值，如果属性不存在则返回 null；
+
+
+## 属性匹配优先级
+
+Project 属性的概念比我们理解的字段概念要复杂些，不仅仅是一个简单的键值对。Project 定义了 4 种命名空间（scopes）的属性，当我们通过访问属性时，getProperty() 会按照优先顺序搜索：
+
+* 1、自有属性： Project 对象自身持有的属性，例如 rootProject 属性；
+* 2、Extension 扩展
+* 3、ext 额外属性
+* 4、Task 任务： 添加到 Project 上的 Task 也支持通过属性 API 访问；
+* 5、父 Project 的 Extension 扩展和 Convention 对象： Extension 扩展和 Convention 对象会被子 Project 继承，因此当 1 ~ 5 未命中时，会继续从父 Project 搜索。从父 Project 继承的属性是只读的；
+* 6、以上未命中，抛出 MissingPropertyException 或返回 null。
+由于部分属性是只读的，因此 setProperty() 的搜索路径较短：
+
+* 1、自有属性
+* 2、ext 额外属性
+
 # Task
 只有 Task 才可以在 Gradle 的执行阶段去执行（其实质是执行的 Task 中的一系列 Action），所以 Task 的重要性不言而喻。
 ## Task属性
